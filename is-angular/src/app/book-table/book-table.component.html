@@ -1,4 +1,8 @@
 <!-- src/app/book-table/book-table.component.html -->
+<div>
+  <input type="text" placeholder="Search by title or author" [(ngModel)]="searchQuery" />
+  <button (click)="search()">Search</button>
+</div>
 
 <table mat-table [dataSource]="books" class="mat-elevation-z8">
 
