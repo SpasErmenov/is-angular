@@ -43,15 +43,27 @@ export class BookTableComponent implements OnInit {
     this.initializeForm();
     this.getBooks();
   }
+
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      if (this.paginator) {
-        this.paginator.page.subscribe((pageEvent: PageEvent) => {
-          this.paginateBooks(pageEvent);
-        });
-      }
+    this.applyPagination();
+  }
+
+  applyPagination(): void {
+    if (this.paginator) {
+      this.paginator.page.subscribe((pageEvent: PageEvent) => {
+        this.paginateBooks(pageEvent);
+      });
+    }
+  }
+
+  getBooks(): void {
+    this.bookService.getBooks().subscribe(books => {
+      this.allBooks = books;
+      this.books = this.allBooks.slice(0, 5);
+      this.applyPagination();
     });
   }
+
   paginateBooks(pageEvent: PageEvent): void {
     this.pageIndex = pageEvent.pageIndex;
     this.pageSize = pageEvent.pageSize;
@@ -92,13 +104,6 @@ export class BookTableComponent implements OnInit {
       imageUrl: ['', [Validators.required, Validators.pattern(/^https?:\/\/.*\.(png|jpg)$/)]],
       // Example for Image
       // https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg
-    });
-  }
-
-  getBooks(): void {
-    this.bookService.getBooks().subscribe(books => {
-      this.allBooks = books;
-      this.books = [...this.allBooks];
     });
   }
 
