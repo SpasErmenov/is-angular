@@ -4,6 +4,8 @@ import { Book } from '../book/book.model';
 import { BookService } from '../book/book.service';
 import { MatDialog } from '@angular/material/dialog';
 import { BookDetailsModalComponent } from '../book-details-modal/book-details-modal.component';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-book-table',
@@ -11,6 +13,8 @@ import { BookDetailsModalComponent } from '../book-details-modal/book-details-mo
   styleUrls: ['./book-table.component.css']
 })
 export class BookTableComponent implements OnInit {
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
   allBooks: Book[] = [];
   books: Book[] = [];
   displayedColumns: string[] = ['ISBN', 'title', 'author', 'imageUrl'];
@@ -18,6 +22,9 @@ export class BookTableComponent implements OnInit {
   sortOrder: 'asc' | 'desc' = 'asc';
 
   searchQuery: string = '';
+  pageSizeOptions: number[] = [5, 10, 15];
+  pageSize: number = this.pageSizeOptions[0];
+  pageIndex: number = 0;
 
   bookForm: FormGroup = this.fb.group({
     title: ['', [Validators.required]],
@@ -33,8 +40,28 @@ export class BookTableComponent implements OnInit {
   constructor(private fb: FormBuilder, private bookService: BookService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.getBooks();
     this.initializeForm();
+    this.getBooks();
+  }
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      if (this.paginator) {
+        this.paginator.page.subscribe((pageEvent: PageEvent) => {
+          this.paginateBooks(pageEvent);
+        });
+      }
+    });
+  }
+  paginateBooks(pageEvent: PageEvent): void {
+    this.pageIndex = pageEvent.pageIndex;
+    this.pageSize = pageEvent.pageSize;
+    this.updateDisplayedBooks();
+  }
+
+  updateDisplayedBooks(): void {
+    const startIndex = this.pageIndex * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.books = [...this.allBooks.slice(startIndex, endIndex)];
   }
   toggleDetailsModal(): void {
     this.showDetailsModal = !this.showDetailsModal;

@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BookDetailsModalComponent } from './book-details-modal/book-details-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { MatIconModule } from '@angular/material/icon';
     ReactiveFormsModule,
     MatDialogModule,
     MatIconModule,
+    MatPaginatorModule
   ],
   providers: [
     provideClientHydration()
