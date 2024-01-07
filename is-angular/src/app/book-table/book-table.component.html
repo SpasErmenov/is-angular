@@ -45,4 +45,33 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+
+  <button (click)="toggleFormVisibility()">Add new book</button>
+
+  <div *ngIf="showForm" class="form-container">
+    <form [formGroup]="bookForm" (ngSubmit)="addBook()">
+      <label for="title">Title:</label>
+      <input type="text" id="title" formControlName="title" />
+      <div class="error-message" *ngIf="bookForm.get('title')?.hasError('required') || bookForm.get('title')?.hasError('pattern')">
+        <div *ngIf="bookForm.get('title')?.hasError('required')">Title is required</div>
+        <div *ngIf="bookForm.get('title')?.hasError('pattern')">Invalid title format</div>
+      </div>
+  
+      <label for="author">Author:</label>
+      <input type="text" id="author" formControlName="author" />
+      <div class="error-message" *ngIf="bookForm.get('author')?.hasError('required')">Author is required</div>
+  
+      <label for="ISBN">ISBN:</label>
+      <input type="text" id="ISBN" formControlName="ISBN" />
+      <div class="error-message" *ngIf="bookForm.get('ISBN')?.hasError('required')">ISBN is required</div>
+      <div class="error-message" *ngIf="bookForm.get('ISBN')?.hasError('pattern')">Invalid ISBN format</div>
+  
+      <label for="imageUrl">Image URL:</label>
+      <input type="text" id="imageUrl" formControlName="imageUrl" />
+      <div class="error-message" *ngIf="bookForm.get('imageUrl')?.hasError('required')">Image URL is required</div>
+      <div class="error-message" *ngIf="bookForm.get('imageUrl')?.hasError('pattern')">Invalid image URL format</div>
+  
+      <button type="submit" [disabled]="bookForm.invalid">Add Book</button>
+    </form>
+  </div>
   

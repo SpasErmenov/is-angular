@@ -7,12 +7,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule } from '@angular/material/table';
 import { BookTableComponent } from './book-table/book-table.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BookDetailsModalComponent } from './book-details-modal/book-details-modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    BookTableComponent
+    BookTableComponent,
+    BookDetailsModalComponent
   ],
   imports: [
     BrowserModule,
@@ -20,7 +22,8 @@ import { FormsModule } from '@angular/forms';
     BrowserAnimationsModule,
     MatTableModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [
     provideClientHydration()
