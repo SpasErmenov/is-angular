@@ -9,6 +9,8 @@ import { BookTableComponent } from './book-table/book-table.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BookDetailsModalComponent } from './book-details-modal/book-details-modal.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -24,6 +26,8 @@ import { BookDetailsModalComponent } from './book-details-modal/book-details-mod
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    MatDialogModule,
+    MatIconModule,
   ],
   providers: [
     provideClientHydration()

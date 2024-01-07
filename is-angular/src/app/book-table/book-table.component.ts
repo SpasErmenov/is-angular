@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Book } from '../book/book.model';
 import { BookService } from '../book/book.service';
-
+import { MatDialog } from '@angular/material/dialog';
+import { BookDetailsModalComponent } from '../book-details-modal/book-details-modal.component';
 
 @Component({
   selector: 'app-book-table',
@@ -26,12 +27,30 @@ export class BookTableComponent implements OnInit {
   });
 
   showForm = false;
+  showDetailsModal = false;
 
-  constructor(private fb: FormBuilder, private bookService: BookService) { }
+
+  constructor(private fb: FormBuilder, private bookService: BookService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.getBooks();
     this.initializeForm();
+  }
+  toggleDetailsModal(): void {
+    this.showDetailsModal = !this.showDetailsModal;
+  }
+
+  openBookDetailsModal(book: Book): void {
+    this.bookService.getBookDetails().subscribe(details => {
+      const dialogRef = this.dialog.open(BookDetailsModalComponent, {
+        width: '400px',
+        data: { ...book, ...details }
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        this.showDetailsModal = false;
+      });
+    });
   }
 
   initializeForm(): void {
